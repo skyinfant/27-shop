@@ -1,0 +1,24 @@
+language: java
+
+jdk:
+  - oraclejdk8
+
+before_install:
+  - mysql -e 'CREATE DATABASE shop;'
+
+test:
+  adapter: mysql
+  database: shop
+  username: root
+  encoding: utf8
+
+#install:
+#  - pip install coveralls
+
+notifications:
+  email:
+    recipients:
+      - 15626201881@163.com
+
+#after_success:
+#  - coveralls
