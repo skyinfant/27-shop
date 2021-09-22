@@ -98,6 +98,11 @@ public class OrderService {
         return orderDao.findOne(orderId).getUser().getId().equals(userId);
     }
 
+    /**
+     * @description:  异步发送mq消息
+     * @param: message
+     * @return: void
+     */
     private void send(Message message) {
         try {
             producer.send(message, new SendCallback() {
@@ -171,7 +176,6 @@ public class OrderService {
         OrderCouponDto dto = new OrderCouponDto(couponCode, orderId, userId);
         //发送一个消息到mq，然后coupon方消费消息，更新t_user_coupon表
         Message message = new Message("saveOrder", "Tag1", "12345", JSONObject.toJSONBytes(dto));
-        // 这里用到了这个mq的异步处理，类似ajax，可以得到发送到mq的情况，并做相应的处理
         send(message);
     }
 
@@ -199,8 +203,7 @@ public class OrderService {
     private void updateUserCouponAfterPay(int orderId, int userId) {
         OrderCouponDto dto = new OrderCouponDto(orderId, userId, 0);
         Message message = new Message("payResult", "Tag1", "12345", JSONObject.toJSONBytes(dto));
-        // 这里用到了这个mq的异步处理，类似ajax，可以得到发送到mq的情况，并做相应的处理
-        //不过要注意的是这个是异步的
+        //异步发送mq消息
         send(message);
     }
 
@@ -234,8 +237,6 @@ public class OrderService {
     public void updateUserCouponAfterCancelOrder(int orderId, int userId) {
         OrderCouponDto dto = new OrderCouponDto(orderId, userId, 1);
         Message message = new Message("cancelOrder", "Tag1", "12345", JSONObject.toJSONBytes(dto));
-        // 这里用到了这个mq的异步处理，类似ajax，可以得到发送到mq的情况，并做相应的处理
-        //不过要注意的是这个是异步的
         send(message);
     }
 }

@@ -24,6 +24,11 @@ public class TestController {
     private DefaultMQProducer producer;
 
 
+    /**
+     * @description:  发送MQ消息
+     * @param: info
+     * @return: void
+     */
     @GetMapping("/test")
     public void test(String info) throws Exception {
         Message message = new Message("TopicTest", "Tag1", "12345", "rocketmq测试成功".getBytes());

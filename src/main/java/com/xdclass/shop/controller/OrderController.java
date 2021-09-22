@@ -74,7 +74,7 @@ public class OrderController {
     }
 
     /**
-     * 订单确认
+     * 订单确认   结账
      *
      * @param session
      * @return

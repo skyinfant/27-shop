@@ -60,7 +60,7 @@ public class CouponService {
 
 
     /**
-     * @description:  优惠券列表
+     * @description:  获取某一页的优惠券列表
      * @param: page
      * @return: List<CouponDto>
      */
@@ -73,19 +73,20 @@ public class CouponService {
         List<CouponDto> couponList = iCouponService.getCouponList();
         int pageSize = page.getPageSize();
         int pageNum = page.getPageNo();
+
         int start = (pageNum - 1) * pageSize;
         int end = pageNum * pageSize;
         List<CouponDto> pageList = Lists.newArrayList();
         for (int i = start; i < end; i++) {
+
             if(i > couponList.size()-1){
                 break;
             }
             pageList.add(couponList.get(i));
             
         }
-
-        page.setResult(pageList);
-        page.setTotalCount(couponList.size());
+        page.setResult(pageList); //指定页的优惠券
+        page.setTotalCount(couponList.size()); //优惠券总数量
         return page.getResult();
     }
 

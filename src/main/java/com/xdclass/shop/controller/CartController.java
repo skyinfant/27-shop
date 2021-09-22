@@ -38,6 +38,7 @@ public class CartController {
     public JsonResult addToCart(@PathVariable Integer id, @PathVariable Integer total, HttpSession session) {
         Product product = productService.findById(id);
         CartUtil.saveProductToCart(session, product, total);
+
         logger.debug("添加到购物车成功...");
         JsonResult result = new JsonResult();
         result.setToSuccess();

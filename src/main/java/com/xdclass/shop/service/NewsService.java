@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,6 +33,7 @@ public class NewsService extends BaseService {
 
 //    @Reference
 //    private ICouponService iCouponService;
+
     @Reference
     private com.tomorrowcat.couponserviceapi.service.CouponService couponService;
 
@@ -66,19 +68,27 @@ public class NewsService extends BaseService {
      * @return: List<News>
      */
     public List<News> queryNotice() {
+        List<News> newsList = new ArrayList<>();
         List<CouponNoticeDto> dtos = couponService.queryCouponNotice();
-        List<News> newsList = dtos.stream().map(dto -> {
-            News news = new News();
-            int reduce = dto.getReduceAmount();
-            String userName = dto.getUserName();
-            String title = dto.getTitle();
-            String title1 = "恭喜" + userName + "使用" + title + "优惠券,获得减免金额" + reduce+"元！";
-            news.setTitle(title1);
-            news.setCreateTime(new Date());
-            return news;
-        }).collect(Collectors.toList());
+
+        if (dtos != null){
+            newsList = dtos.stream().map(dto -> {
+                News news = new News();
+                int reduce = dto.getReduceAmount();
+                String userName = dto.getUserName();
+                String title = dto.getTitle();
+                Date saveTime = dto.getSaveTime();
+
+                String title1 = "恭喜" + userName + "使用" + title + "优惠券,获得减免金额" + reduce+"元！";
+                news.setTitle(title1);
+                news.setCreateTime(saveTime);
+                return news;
+            }).collect(Collectors.toList());
+
+        }
 
         return newsList;
+
     }
 
 }

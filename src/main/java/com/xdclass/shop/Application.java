@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -18,15 +20,40 @@ import javax.sql.DataSource;
 import java.util.Properties;
 
 /**
- * @author daniel
+ * 要打为war包，所以注释掉，改为下面的样子
  */
+//@EnableDubboConfig
+//@DubboComponentScan({"com.tomorrowcat.couponapp.service.dubbo"})
+//@SpringBootApplication
+//@EnableJpaRepositories
+//@EnableTransactionManagement
+//@EnableAutoConfiguration
+//public class Application {
+//
+//    @Value("${jdbc.driverClassName}")
+//    private String driverClassName;
+//
+//    @Value("${jdbc.url}")
+//    private String url;
+//
+//    @Value("${jdbc.username}")
+//    private String username;
+//
+//    @Value("${jdbc.password}")
+//    private String password;
+
+//    public static void main(String[] args) {
+//        SpringApplication.run(Application.class);
+//    }
+
+
 @EnableDubboConfig
 @DubboComponentScan({"com.tomorrowcat.couponapp.service.dubbo"})
 @SpringBootApplication
 @EnableJpaRepositories
 @EnableTransactionManagement
 @EnableAutoConfiguration
-public class Application {
+public class Application extends SpringBootServletInitializer {
 
     @Value("${jdbc.driverClassName}")
     private String driverClassName;
@@ -40,9 +67,16 @@ public class Application {
     @Value("${jdbc.password}")
     private String password;
 
-    public static void main(String[] args) {
-        SpringApplication.run(Application.class);
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder
+                                                         application) {
+        return application.sources(Application.class);
     }
+
+    public static void main(String[] args) throws Exception {
+        SpringApplication.run(Application.class, args);
+    }
+
 
     @Bean
     public DataSource dataSource() {
@@ -92,3 +126,4 @@ public class Application {
     }
 
 }
+
