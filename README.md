@@ -7,10 +7,6 @@
 ![功能导图](img/module.png)
 
 
-## 启动服务
-
-    com.xdclass.shop.Application.main()
-    
 主页：[http://localhost:8081/](localhost:8081/)  
 后台：[http://localhost:8081/admin/login](localhost:8081/admin/login)  
 
